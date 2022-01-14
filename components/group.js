@@ -90,6 +90,7 @@ router.post('/sendpdf/:chatname', async (req, res) => {
 
     let chatname = req.params.chatname;
     let pdf = req.body.pdf;
+    const fileName = req.body.fileName;
 
     if (chatname == undefined || pdf == undefined) {
         res.send({ status: "error", message: "please enter valid chatname and base64/url of pdf" })
@@ -101,7 +102,7 @@ router.post('/sendpdf/:chatname', async (req, res) => {
                         if (!fs.existsSync('./temp')) {
                             fs.mkdirSync('./temp');
                         }
-                        let media = new MessageMedia('application/pdf', pdf);
+                        let media = new MessageMedia('application/pdf', pdf, fileName);
                         client.sendMessage(chat.id._serialized, media).then((response) => {
                             if(response.id.fromMe){
                                 res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
@@ -111,7 +112,7 @@ router.post('/sendpdf/:chatname', async (req, res) => {
                         return true;
                     }
                 });     
-            });
+            }).catch(ex => res.send({ status: 'error', message: JSON.stringify(ex) }));
         } else if (vuri.isWebUri(pdf)) {
             var path = './temp/' + pdf.split("/").slice(-1)[0]
             client.getChats().then((data) => {

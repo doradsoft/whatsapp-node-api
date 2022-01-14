@@ -4,6 +4,7 @@
   "description": "A NodeJS API wrapper for whatsapp-web.js",
   "main": "api.js",
   "scripts": {
+    "pm2": "pm2 start pm2-ecosystem.yaml",
     "start": "node api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,16 +25,16 @@
   },
   "homepage": "https://github.com/pranavms13/whatsapp-node-api#readme",
   "dependencies": {
-    "axios": "^0.21.2",
-    "body-parser": "^1.19.0",
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.1",
     "child_process": "^1.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "fs": "0.0.1-security",
     "nodemon": "^2.0.15",
     "qrcode-terminal": "^0.12.0",
     "request": "^2.88.2",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "valid-url": "^1.0.9",
-    "whatsapp-web.js": "^1.12.5"
+    "whatsapp-web.js": "^1.15.3"
   }
 }

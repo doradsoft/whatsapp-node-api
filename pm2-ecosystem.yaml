@@ -1,0 +1,3 @@
+apps:
+  - name: tanah-whatsapp-server
+    script: api.js
