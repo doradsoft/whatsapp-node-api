@@ -106,7 +106,6 @@ router.post('/sendpdf/:chatname', async (req, res) => {
                         client.sendMessage(chat.id._serialized, media).then((response) => {
                             if(response.id.fromMe){
                                 res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
-                                fs.unlinkSync(path)
                             }
                         });
                         return true;
