@@ -3,6 +3,7 @@ const { MessageMedia, Location } = require("whatsapp-web.js");
 const request = require('request')
 const vuri = require('valid-url');
 const fs = require('fs');
+const pathUtil = require("path");
 
 const mediadownloader = (url, path, callback) => {
     request.head(url, (err, res, body) => {
@@ -47,8 +48,8 @@ router.post('/sendimage/:chatname', async (req, res) => {
             client.getChats().then((data) => {
                 data.forEach(chat => {
                     if (chat.id.server === "g.us" && chat.name === chatname) {
-                        if (!fs.existsSync('./temp')) {
-                            fs.mkdirSync('./temp');
+                        if (!fs.existsSync(pathUtil.join(__dirname, "..", "temp"))) {
+                            fs.mkdirSync(pathUtil.join(__dirname, "..", "temp"));
                         }
 
                         let media = new MessageMedia('image/png', image);
@@ -99,8 +100,8 @@ router.post('/sendpdf/:chatname', async (req, res) => {
             client.getChats().then((data) => {
                 data.some(chat => {
                     if (chat.id.server === "g.us" && chat.name === chatname) {
-                        if (!fs.existsSync('./temp')) {
-                            fs.mkdirSync('./temp');
+                        if (!fs.existsSync(pathUtil.join(__dirname, "..", "temp"))) {
+                            fs.mkdirSync(pathUtil.join(__dirname, "..", "temp"));
                         }
                         let media = new MessageMedia('application/pdf', pdf, fileName);
                         client.sendMessage(chat.id._serialized, media).then((response) => {

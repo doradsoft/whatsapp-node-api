@@ -2,11 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require('fs');
 const axios = require('axios');
-const shelljs = require('shelljs');
+const path = require("path");
 
 const config = require('./config.json');
 const { Client } = require('whatsapp-web.js');
-const SESSION_FILE_PATH = process.env.SESSION_FILE_PATH || './session.json';
+const SESSION_FILE_PATH = process.env.SESSION_FILE_PATH || path.join(__dirname, "session.json");
 
 let sessionCfg;
 if (fs.existsSync(SESSION_FILE_PATH)) {
@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 client.on('qr', qr => {
-    fs.writeFileSync('./components/last.qr', qr);
+    fs.writeFileSync(path.join(__dirname, "components", "last.qr"), qr);
 });
 
 
@@ -53,7 +53,7 @@ client.on('authenticated', (session) => {
     });
 
     try {
-        fs.unlinkSync('./components/last.qr')
+        fs.unlinkSync(path.join(__dirname, "components", "last.qr"))
     } catch(err) {}
 });
 

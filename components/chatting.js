@@ -3,6 +3,7 @@ const { MessageMedia, Location } = require("whatsapp-web.js");
 const request = require('request')
 const vuri = require('valid-url');
 const fs = require('fs');
+const pathUtil = require("path");
 
 const mediadownloader = (url, path, callback) => {
     request.head(url, (err, res, body) => {
@@ -45,11 +46,11 @@ router.post('/sendimage/:phone', async (req,res) => {
                 }
             });
         } else if (vuri.isWebUri(image)) {
-            if (!fs.existsSync('./temp')) {
-                await fs.mkdirSync('./temp');
+            if (!fs.existsSync(pathUtil.join(__dirname, "..", "temp"))) {
+                await fs.mkdirSync(pathUtil.join(__dirname, "..", "temp"));
             }
 
-            var path = './temp/' + image.split("/").slice(-1)[0]
+            var path = pathUtil.join(__dirname, "..", "temp", image.split("/").slice(-1)[0]) 
             mediadownloader(image, path, () => {
                 let media = MessageMedia.fromFilePath(path);
                 
@@ -83,11 +84,11 @@ router.post('/sendpdf/:phone', async (req,res) => {
                 }
             });
         } else if (vuri.isWebUri(pdf)) {
-            if (!fs.existsSync('./temp')) {
-                await fs.mkdirSync('./temp');
+            if (!fs.existsSync(pathUtil.join(__dirname, "..", "temp"))) {
+                await fs.mkdirSync(pathUtil.join(__dirname, "..", "temp"));
             }
 
-            var path = './temp/' + pdf.split("/").slice(-1)[0]
+            var path = pathUtil.join(__dirname, "..", "temp", pdf.split("/").slice(-1)[0]) 
             mediadownloader(pdf, path, () => {
                 let media = MessageMedia.fromFilePath(path);
                 client.sendMessage(`${phone}@c.us`, media).then((response) => {
